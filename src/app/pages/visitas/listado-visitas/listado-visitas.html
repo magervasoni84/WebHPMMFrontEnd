@@ -1,0 +1,124 @@
+<!-- paciente.component.html -->
+<div class="container mt-4">
+  <h2>Gestión de Pacientes</h2>
+
+  <!-- Formulario para crear -->
+<!--   <div class="card mb-4">
+    <div class="card-header">Nuevo Paciente</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <input type="text" class="form-control mb-2" 
+                 [(ngModel)]="nuevoPaciente.nombre" 
+                 placeholder="Nombre">
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control mb-2" 
+                 [(ngModel)]="nuevoPaciente.edad" 
+                 placeholder="Edad">
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control mb-2" 
+                 [(ngModel)]="nuevoPaciente.habitacion" 
+                 placeholder="Habitación">
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control mb-2" 
+                 [(ngModel)]="nuevoPaciente.novedad" 
+                 placeholder="Novedad">
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" 
+                  (click)="crearPaciente()"
+                  [disabled]="!nuevoPaciente.nombre || nuevoPaciente.habitacion <= 0">
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+ -->
+  <!-- Formulario de edición -->
+  <div *ngIf="pacienteSeleccionado" class="card mb-4 bg-light">
+    <div class="card-header">Editando Paciente #{{pacienteSeleccionado!.id}}</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <input type="text" class="form-control mb-2" 
+                 [(ngModel)]="pacienteSeleccionado!.nombre">
+        </div>
+                <div class="col-md-2">
+          <input type="number" class="form-control mb-2" 
+                 [(ngModel)]="pacienteSeleccionado!.paciente">
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control mb-2" 
+                 [(ngModel)]="pacienteSeleccionado!.edad">
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control mb-2" 
+                 [(ngModel)]="pacienteSeleccionado!.habitacion">
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control mb-2" 
+                 [(ngModel)]="pacienteSeleccionado!.novedad">
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-success mb-2 w-100" 
+                  (click)="actualizarPaciente()">
+            Guardar
+          </button>
+          <button class="btn btn-secondary w-100" 
+                  (click)="cancelarEdicion()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de pacientes -->
+  <div class="card">
+    <div class="card-header">Lista de Pacientes</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Paciente</th>
+              <th>Habitación</th>
+              <th>Nombre</th>
+              <th>Edad</th>
+              <th>Novedad</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let paciente of pacientes">
+              <td>{{ paciente.id }}</td>
+              <td>{{ paciente.paciente }}</td>
+              <td>{{ paciente.habitacion }}</td>
+              <td>{{ paciente.nombre }}</td>
+              <td>{{ paciente.edad }}</td>
+              <td>{{ paciente.novedad }}</td>
+              <td>
+                <button class="btn btn-sm btn-warning me-2" 
+                        (click)="seleccionarPaciente(paciente)">
+                  Editar
+                </button>
+                <button class="btn btn-sm btn-danger" 
+                        (click)="eliminarPaciente(paciente.id)">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="pacientes.length === 0">
+              <td colspan="6" class="text-center">No hay pacientes registrados</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
