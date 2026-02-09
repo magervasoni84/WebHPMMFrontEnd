@@ -5,3 +5,17 @@
 .btn-sm {
   min-width: 70px;
 }
+
+.container-pacientes {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.tabla-pacientes {
+  font-size: 0.875rem;
+}
+
+.tabla-pacientes th,
+.tabla-pacientes td {
+  padding: 0.25rem 0.5rem;
+}

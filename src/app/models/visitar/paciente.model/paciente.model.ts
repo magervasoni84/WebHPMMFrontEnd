@@ -1,22 +1,25 @@
+import { VisitarAcompanianteModel } from '../visitas.model/visitas.model';
+
 export class PacienteModel {
   id: number;
-hab: number;
-  CAM: number;
-  habitacion: number;
+  idpaciente: number;
+  hab: number;
+  cama: number;
   nombre: string;
-  edad: number;
-  motivo: string;
-  novedad: string;
+  dni: number;
+  ubicacion: string;
+  observacion: string;
+  acompaniantes: VisitarAcompanianteModel[];
 
-
-  constructor(id: number, hab:number, CAM: number, habitacion: number, nombre: string, edad: number, motivo:string, novedad: string) {
+  constructor( id: number = 0, idpaciente: number = 0, hab: number = 0, cama: number = 0, nombre: string = '', dni: number = 0, ubicacion: string = '', observacion: string = '', acompaniantes: VisitarAcompanianteModel[] = [] ) {
     this.id = id;
+    this.idpaciente = idpaciente;
     this.hab = hab;
-    this.CAM = CAM;
-    this.habitacion = habitacion;
+    this.cama = cama;
     this.nombre = nombre;
-    this.edad = edad;
-    this.motivo = motivo;
-    this.novedad = novedad;
+    this.dni = dni;
+    this.ubicacion = ubicacion;
+    this.observacion = observacion;
+    this.acompaniantes = acompaniantes;
   }
-}
+} 
