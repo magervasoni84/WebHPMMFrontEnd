@@ -1,9 +1,9 @@
 <!-- paciente.component.html -->
 <div class="container-pacientes mt-4">
   <h2>Gestión de Pacientes</h2>
-  <button class="btn btn-primary mb-3" (click)="cargarPacientes()">Actualizar Lista</button>
 
-  
+  <button class="btn btn-primary" (click)="cargarPacientes()">Actualizar Lista</button>
+
   
   
   
@@ -122,7 +122,12 @@
             <label class="form-label">Observaciones</label>
             <input type="text" class="form-control mb-3" 
                    [(ngModel)]="nuevoVisitante.observacion" 
-                   placeholder="Observaciones">
+                   placeholder="Observaciones"
+                   maxlength="100"
+                   
+                   [attr.title]="nuevoVisitante.observacion"
+                   style="font-family:monospace;"
+                   >
           </div>
         </div>
         
@@ -146,12 +151,15 @@
 </tr>
     <tr *ngFor="let acompaniante of paciente.acompaniantes" class="fila-acompaniante">
       <td colspan="9" class="p-2">
-        <small>
-          <strong>Visita:</strong> {{ acompaniante.nombre }} | 
-          <strong>Entrada:</strong> {{ acompaniante.entrada | date:'short' }} |
-          <strong>DNI:</strong> {{ acompaniante.dni }} | 
-          <strong>Obs:</strong> {{ acompaniante.observacion }}
-        </small>
+        <div class="d-flex flex-wrap align-items-center gap-2 small">
+          <span class="fw-bold">Visita:</span>
+          <span class="fw-semibold">{{ acompaniante.nombre }}</span>
+          <span class="badge bg-light text-dark">{{ acompaniante.entrada | date:'short' }}</span>
+          <span class="text-muted" style="font-family:monospace;">DNI: {{ acompaniante.dni }}</span>
+          <span class="ms-auto" style="max-width:40%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" [attr.title]="acompaniante.observacion">
+            <strong>Obs:</strong> {{ acompaniante.observacion }}
+          </span>
+        </div>
       </td>
     </tr>
   </ng-container>

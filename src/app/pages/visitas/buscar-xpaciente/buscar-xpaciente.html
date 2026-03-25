@@ -1,0 +1,55 @@
+<div class="container mt-4">
+  <h2>Búsqueda de Paciente</h2>
+
+  <!-- Formulario de búsqueda con grid de Bootstrap -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3 align-items-end">
+        <!-- Campo: Nombre y Apellido -->
+        <div class="col-md-3">
+          <label for="nombre" class="form-label">Nombre y Apellido</label>
+          <input type="text" class="form-control form-control-sm" id="nombre" placeholder="Ingrese nombre y apellido"
+            [(ngModel)]="nombrePaciente">
+        </div>
+        <div class="col-md-2">
+          <label for="dni" class="form-label">DNI</label>
+          <input type="text" class="form-control form-control-sm" id="dni" placeholder="Ingrese DNI" [(ngModel)]="dniPaciente">
+        </div>
+        <div class="col-md-2">
+          <label for="ficha" class="form-label">Ficha</label>
+          <input type="text" class="form-control form-control-sm" id="ficha" placeholder="Ingrese ficha" [(ngModel)]="fichaPaciente">
+        </div>
+        <div class="col-md-2">
+          <label for="diasEgreso" class="form-label">Días de Egreso</label>
+          <input type="number" class="form-control form-control-sm" id="diasEgreso" placeholder="Días de egreso" [(ngModel)]="diasEgreso">
+        </div>
+
+        <!-- Botón de búsqueda -->
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" (click)="buscarPaciente()">Buscar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tarjeta de resultados -->
+  <div class="card">
+    <div class="card-header">Pacientes</div>
+    <div class="card-body">
+      <div *ngIf="cargandoPacientes" class="text-center">
+        <p>Cargando pacientes...</p>
+      </div>
+      <div *ngIf="!cargandoPacientes && pacientes.length === 0">
+        <p class="text-muted">No hay pacientes para mostrar.</p>
+      </div>
+      <div *ngIf="!cargandoPacientes && pacientes.length > 0">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let paciente of pacientes">
+            <strong>Paciente: </strong>{{ paciente.nombre }} <strong>DNI: </strong>{{ paciente.dni }}, <strong>Ficha: </strong>{{ paciente.idpaciente }}
+              <strong>Ingreso: </strong>{{ paciente.fechaIngreso | date:'short' }}, <strong>Egreso: </strong>{{ paciente.fechaEgreso | date:'short' }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

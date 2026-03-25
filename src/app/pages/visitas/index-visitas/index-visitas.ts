@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { ListadoVisitas } from '../listado-visitas/listado-visitas';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-index-visitas',
-  imports: [ListadoVisitas],
+  standalone: true,
+  imports: [RouterLink, RouterOutlet],
   templateUrl: './index-visitas.html',
   styleUrl: './index-visitas.css',
 })

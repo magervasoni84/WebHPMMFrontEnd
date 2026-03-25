@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { PacienteModel } from '../../../models/visitar/paciente.model/paciente.model';
 import { VisitarAcompanianteModel } from '../../../models/visitar/visitas.model/visitas.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-listado-visitas',
   imports: [CommonModule, FormsModule],
   templateUrl: './listado-visitas.html',
-  styleUrl: './listado-visitas.css',
+  styleUrls: ['./listado-visitas.css', '../visitas-shared.css'],
 })
 
 
@@ -69,9 +70,9 @@ export class ListadoVisitas {
     }
     this.cargandoPacientes = true;
 
-    this.http.get<any[]>('http://localhost:5002/visitar').subscribe({
+
+    this.http.get<any[]>(`${environment.apiBaseUrl}/visitar`).subscribe({
       next: (data) => {
-        // Mapear correctamente los datos del backend
         this.pacientes = data.map(item => ({
           id: item.id,
           idpaciente: item.idpaciente,
@@ -87,7 +88,7 @@ export class ListadoVisitas {
             nombre: acomp.nombre,
             dni: acomp.dni,
             entrada: acomp.entrada ? new Date(acomp.entrada) : new Date(),
-            observaciones: acomp.observaciones || ''
+            observacion: acomp.observacion || ''
           }))
         }));
         console.log('Datos de pacientes cargados: ', this.pacientes)
@@ -155,7 +156,7 @@ export class ListadoVisitas {
     }
 
     // Enviar al backend
-    this.http.put(`http://localhost:5002/visitar/paciente/${paciente.idpaciente}`, {
+    this.http.put(`${environment.apiBaseUrl}/visitar/paciente/${paciente.idpaciente}`, {
       idpaciente: paciente.idpaciente,
       observacion: this.observacionEditada
     }).subscribe({
@@ -174,7 +175,7 @@ export class ListadoVisitas {
 
         // Luego forzar refresco de la vista
         this.pacientes = [...this.pacientes];
-        
+
         // Usar Zone para asegurar que se ejecuta dentro de Angular
         setTimeout(() => {
           this.cdr.detectChanges();
@@ -210,7 +211,7 @@ export class ListadoVisitas {
 
 
 
-// Borrar esta funcion, NO se agregan manualmente los pacientes, vienen del backEnd
+  // Borrar esta funcion, NO se agregan manualmente los pacientes, vienen del backEnd
   // Crear nuevo paciente
   crearPaciente(): void {
     if (this.nuevoPaciente.nombre) {
@@ -235,7 +236,7 @@ export class ListadoVisitas {
 
 
 
-    // Seleccionar paciente para agregar visitante (toggle)
+  // Seleccionar paciente para agregar visitante (toggle)
   agregarVisitante(paciente: PacienteModel): void {
     // Si ya está seleccionado, lo deseleccionamos (cerrar formulario)
     if (this.pacienteSeleccionadoId === paciente.id) {
@@ -295,13 +296,13 @@ export class ListadoVisitas {
     this.cargando = true;
 
     // Enviar al backend
-    this.http.post(`http://localhost:5002/visitar/acompaniante/`, datosVisitante).subscribe({
+    this.http.post(`${environment.apiBaseUrl}/visitar/acompaniante/`, datosVisitante).subscribe({
       next: (response: any) => {
         console.log('Visitante guardado exitosamente:', response);
 
         // Buscar el índice del paciente en el array local
         const pacienteIndex = this.pacientes.findIndex(p => p.id === this.pacienteSeleccionadoId);
-        
+
         if (pacienteIndex !== -1) {
           // Crear el objeto visitante con los datos del backend
           const nuevoVisitanteGuardado: any = {
@@ -312,17 +313,17 @@ export class ListadoVisitas {
             entrada: response.entrada ? new Date(response.entrada) : this.nuevoVisitante.entrada,
             observacion: response.observacion || this.nuevoVisitante.observacion || ''
           };
-          
+
           console.log('Visitante a agregar localmente:', nuevoVisitanteGuardado);
-          
+
           // Asegurarse de que el array de acompañantes existe
           if (!this.pacientes[pacienteIndex].acompaniantes) {
             this.pacientes[pacienteIndex].acompaniantes = [];
           }
-          
+
           // Agregar el nuevo visitante al array
           this.pacientes[pacienteIndex].acompaniantes.push(nuevoVisitanteGuardado);
-          
+
           // Forzar la detección de cambios de Angular
           this.pacientes = [...this.pacientes];
         }
@@ -346,10 +347,10 @@ export class ListadoVisitas {
           };
           this.cargando = false;
           this.pacientes = [...this.pacientes]; // Forzar refresco final
-          
+
           // CRITICO: Forzar la detección de cambios de Angular inmediatamente
           this.cdr.detectChanges();
-          
+
           console.log('Formulario cerrado. ID seleccionado:', this.pacienteSeleccionadoId);
         }, 100);
       },
