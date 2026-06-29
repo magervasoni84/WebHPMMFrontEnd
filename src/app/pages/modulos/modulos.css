@@ -1,0 +1,5 @@
+.modulos-container { padding: 20px; }
+.module-list { display: flex; gap: 12px; margin-top: 16px; }
+.module-btn { padding: 12px 20px; border-radius: 6px; border: none; background: #667eea; color: white; cursor: pointer; font-weight: 600; }
+.module-btn.disabled { opacity: 0.4; cursor: not-allowed; }
+.hint { color: #666; margin-top: 12px; }

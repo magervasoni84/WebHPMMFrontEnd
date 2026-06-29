@@ -3,13 +3,19 @@
   <h2>Gestión de Pacientes</h2>
 
   <button class="btn btn-primary" (click)="cargarPacientes()">Actualizar Lista</button>
+  <div class="mb-3">
+    <label class="me-2">Mostrar hasta</label>
+    <input type="number" class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="limiteAcompaniantes"
+      min="1" max="10" step="1">
+    <label class="me-2"> Visitas por Paciente</label>
+  </div>
 
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
 
 
@@ -32,141 +38,131 @@
               <th>Acciones</th>
             </tr>
           </thead>
-<tbody>
-  <ng-container *ngFor="let paciente of pacientes">
-    <tr>
-      <td>{{ paciente.hab }}</td>
-      <td>{{ paciente.cama }}</td>
-      <td>{{ paciente.idpaciente }}</td>
-      <td>{{ paciente.nombre }}</td>
-      <td>{{ paciente.dni }}</td>
-      <td>{{ paciente.ubicacion }}</td>
-      <td>
-        <!-- Observaciones: Texto normal o textbox según modo edición -->
-        <div *ngIf="pacienteEnEdicion === paciente.id; else mostrarObservacion">
-          <textarea 
-            class="form-control form-control-sm" 
-            [(ngModel)]="observacionEditada"
-            rows="2"
-          ></textarea>
-        </div>
-        <ng-template #mostrarObservacion>
-          {{ paciente.observacion }}
-        </ng-template>
-      </td>
-      <td>
-        <!-- Botón para agregar visita (siempre visible) -->
-        <button class="btn btn-sm btn-warning me-2" 
-                (click)="agregarVisitante(paciente)">
-          Agregar Visita
-        </button>
-      </td>
-      
-      
-      
-      
-      
-      
-      <td>
-        <!-- Botón de Editar/Guardar según el estado -->
-        <div *ngIf="pacienteEnEdicion !== paciente.id; else botonesEdicion">
-          <button class="btn btn-sm btn-success me-2" 
-                  (click)="iniciarEdicion(paciente)">
-            Editar
-          </button>
-        </div>
-        <ng-template #botonesEdicion>
-          <button class="btn btn-sm btn-primary me-2" 
-                  (click)="guardarObservacion(paciente)">
-            Guardar
-          </button>
-          <button class="btn btn-sm btn-secondary" 
-                  (click)="cancelarEdicion()">
-            Cancelar
-          </button>
-        </ng-template>
-      </td>
-    </tr>
+          <tbody>
+            <ng-container *ngFor="let paciente of pacientes">
+              <tr>
+                <td>{{ paciente.hab }}</td>
+                <td>{{ paciente.cama }}</td>
+                <td>{{ paciente.idpaciente }}</td>
+                <td>{{ paciente.nombre }}</td>
+                <td>{{ paciente.dni }}</td>
+                <td>{{ paciente.ubicacion }}</td>
+                <td>
+                  <!-- Observaciones: Texto normal o textbox según modo edición -->
+                  <div *ngIf="pacienteEnEdicion === paciente.id; else mostrarObservacion">
+                    <textarea class="form-control form-control-sm" [(ngModel)]="observacionEditada" rows="2"></textarea>
+                  </div>
+                  <ng-template #mostrarObservacion>
+                    {{ paciente.observacion }}
+                  </ng-template>
+                </td>
+                <td>
+                  <!-- Botón para agregar visita (siempre visible) -->
+                  <button class="btn btn-sm btn-warning me-2" (click)="agregarVisitante(paciente)">
+                    Agregar Visita
+                  </button>
+                </td>
 
 
 
 
-    <!-- Fila de visitas acompañantes -->
-     <!-- Fila para mostrar el formulario de agregar visitante -->
-<tr *ngIf="pacienteSeleccionadoId === paciente.id" class="fila-formulario-visitante">
-  <td colspan="9" class="p-0">
-    <div class="card m-2 bg-warning bg-opacity-10">
-      <div class="card-header bg-warning py-2">
-        Agregar Visitante a: <strong>{{ getNombrePaciente() }}</strong> (Hab: {{ getHabitacionPaciente() }})
-      </div>
-      <div class="card-body p-3">
-        <div class="row">
-          <div class="col-md-3">
-            <label class="form-label">Nombre del Visitante</label>
-            <input type="text" class="form-control mb-3" 
-                   [(ngModel)]="nuevoVisitante.nombre" 
-                   placeholder="Nombre">
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">DNI</label>
-            <input type="number" class="form-control mb-3" 
-                   [(ngModel)]="nuevoVisitante.dni"
-                   placeholder="DNI">
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">Hora Entrada</label>
-            <input type="datetime-local" class="form-control mb-3" 
-                   [(ngModel)]="nuevoVisitante.entrada">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Observaciones</label>
-            <input type="text" class="form-control mb-3" 
-                   [(ngModel)]="nuevoVisitante.observacion" 
-                   placeholder="Observaciones"
-                   maxlength="100"
-                   
-                   [attr.title]="nuevoVisitante.observacion"
-                   style="font-family:monospace;"
-                   >
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <button class="btn btn-success me-2" 
-                    [disabled]="cargando"
-                    (click)="guardarVisitante()">
-              {{ cargando ? 'Guardando...' : 'Guardar Visitante' }}
-            </button>
-            <button class="btn btn-secondary" 
-                    [disabled]="cargando"
-                    (click)="cancelarAgregarVisitante()">
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </td>
-</tr>
-    <tr *ngFor="let acompaniante of paciente.acompaniantes" class="fila-acompaniante">
-      <td colspan="9" class="p-2">
-        <div class="d-flex flex-wrap align-items-center gap-2 small">
-          <span class="fw-bold">Visita:</span>
-          <span class="fw-semibold">{{ acompaniante.nombre }}</span>
-          <span class="badge bg-light text-dark">{{ acompaniante.entrada | date:'short' }}</span>
-          <span class="text-muted" style="font-family:monospace;">DNI: {{ acompaniante.dni }}</span>
-          <span class="ms-auto" style="max-width:40%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" [attr.title]="acompaniante.observacion">
-            <strong>Obs:</strong> {{ acompaniante.observacion }}
-          </span>
-        </div>
-      </td>
-    </tr>
-  </ng-container>
-  <tr *ngIf="pacientes.length === 0">
-    <td colspan="9" class="text-center">No hay pacientes registrados</td>
-  </tr>
-</tbody>
+
+
+                <td>
+                  <!-- Botón de Editar/Guardar según el estado -->
+                  <div *ngIf="pacienteEnEdicion !== paciente.id; else botonesEdicion">
+                    <button class="btn btn-sm btn-success me-2" (click)="iniciarEdicion(paciente)">
+                      Editar
+                    </button>
+                  </div>
+                  <ng-template #botonesEdicion>
+                    <button class="btn btn-sm btn-primary me-2" (click)="guardarObservacion(paciente)">
+                      Guardar
+                    </button>
+                    <button class="btn btn-sm btn-secondary" (click)="cancelarEdicion()">
+                      Cancelar
+                    </button>
+                  </ng-template>
+                </td>
+              </tr>
+
+
+
+
+              <!-- Fila de visitas acompañantes -->
+              <!-- Fila para mostrar el formulario de agregar visitante -->
+              <tr *ngIf="pacienteSeleccionadoId === paciente.id" class="fila-formulario-visitante">
+                <td colspan="9" class="p-0">
+                  <div class="card m-2 bg-warning bg-opacity-10">
+                    <div class="card-header bg-warning py-2">
+                      Agregar Visitante a: <strong>{{ getNombrePaciente() }}</strong> (Hab: {{ getHabitacionPaciente()
+                      }})
+                    </div>
+                    <div class="card-body p-3">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="form-label">Nombre del Visitante</label>
+                          <input type="text" class="form-control mb-3" [(ngModel)]="nuevoVisitante.nombre"
+                            placeholder="Nombre">
+                        </div>
+                        <div class="col-md-2">
+                          <label class="form-label">DNI</label>
+                          <input type="number" class="form-control mb-3" [(ngModel)]="nuevoVisitante.dni"
+                            placeholder="DNI">
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Hora Entrada</label>
+                          <input type="datetime-local" class="form-control mb-3" [(ngModel)]="nuevoVisitante.entrada">
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">Observaciones</label>
+                          <!-- Observaciones con opciones predefinidas (datalist) -->
+                          <input type="text" class="form-control mb-3" list="opcionesObservaciones"
+                            [(ngModel)]="nuevoVisitante.observacion" placeholder="Doble Clic para opciones..."
+                            maxlength="100" [attr.title]="nuevoVisitante.observacion" style="font-family:monospace;">
+                          <datalist id="opcionesObservaciones">
+                            <option value="Visita">
+                            <option value="Acompañante familiar">
+                            <option value="Terapeuta">
+                            <option value="Cuidadora">
+
+
+                          </datalist>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-12">
+                          <button class="btn btn-success me-2" [disabled]="cargando" (click)="guardarVisitante()">
+                            {{ cargando ? 'Guardando...' : 'Guardar Visitante' }}
+                          </button>
+                          <button class="btn btn-secondary" [disabled]="cargando" (click)="cancelarAgregarVisitante()">
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngFor="let acompaniante of paciente.acompaniantes | slice:0:limiteAcompaniantes" class="fila-acompaniante">
+                <td colspan="9" class="p-2">
+                  <div class="d-flex flex-wrap align-items-center gap-2 small" style="padding-left: 2rem">
+                    <span class="fw-bold">Visita:</span>
+                    <span class="fw-semibold">{{ acompaniante.nombre }}</span>
+                    <span class="badge bg-light text-dark">{{ acompaniante.entrada | date:'fullDate' }}</span>
+                    <span class="text-muted" style="font-family:monospace;">DNI: {{ acompaniante.dni }}</span>
+                    <span class="text-truncate" style="max-width: 300px;" [attr.title]="acompaniante.observacion">
+                      <strong>Obs:</strong> {{ acompaniante.observacion }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            <tr *ngIf="pacientes.length === 0">
+              <td colspan="9" class="text-center">No hay pacientes registrados</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

@@ -1,5 +1,15 @@
-<header class=" bg-cover text-white">
-    <div class="container text-center py-5">
-        <h1 class="display-6 fw-bold">Aca va a ir un hermoso header</h1>
+<header class="bg-cover text-white">
+    <div class="container header-content">
+        <div class="header-left">
+            <h1 class="display-6 fw-bold">HPMM</h1>
+        </div>
+        <div *ngIf="isLoggedIn()" class="header-right">
+            <div class="user-info">
+                <span class="username" *ngIf="currentUser">{{ currentUser.username }}</span>
+            </div>
+            <button class="btn-logout" (click)="logout()">
+                Cerrar Sesión
+            </button>
+        </div>
     </div>
 </header>

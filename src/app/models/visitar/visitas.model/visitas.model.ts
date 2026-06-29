@@ -23,7 +23,7 @@ export class VisitarAcompanianteModel {
   idPaciente: number;
   nombre: string;
   dni: string;
-  entrada: Date;
+  entrada: string | Date;
 
   observacion: string;
 

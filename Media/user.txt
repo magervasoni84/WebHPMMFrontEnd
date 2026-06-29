@@ -1,0 +1,46 @@
+
+SELECT [OPE]
+      ,[NOM]
+      ,[PWD]
+      ,[SUP]
+      ,[PRF]
+      ,[SIS_DFT]
+      ,[FUN_DFT]
+      ,[BRW]
+      ,[ACT]
+      ,[DLG]
+      ,[FNC]
+      ,[LGR]
+      ,[TEL]
+      ,[FAL]
+      ,[FBJ]
+      ,[OBS]
+      ,[RSP]
+      ,[VAL_REC]
+      ,[AGR]
+      ,[PW1]
+      ,[PW2]
+      ,[PW3]
+      ,[PW4]
+      ,[PW5]
+      ,[PW6]
+      ,[KEY_VTO]
+      ,[MDL_DFT]
+      ,[PGM_DFT]
+      ,[KEY_MDF]
+      ,[CTL_ENT]
+      ,[CEL]
+      ,[MAI]
+      ,[TDO]
+      ,[NDO]
+  FROM [hpmsa].[dbo].[SYSOPE]
+  where OPE = '3141'
+
+Valores Importantes:
+OPE:3141
+NOM:SISTEMAS
+PWD:!$# 
+PRF:GUEVAR
+OBS:SG;QR;EV
+MAI:sistemas@hpmm.com.ar
+

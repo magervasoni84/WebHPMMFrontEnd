@@ -17,6 +17,9 @@ import { environment } from '../../../../environments/environment';
 
 export class ListadoVisitas {
 
+
+  limiteAcompaniantes: number = 2;
+
   // Datos de ejemplo (luego vendrán de un servicio)
   pacientes: PacienteModel[] = [];
 
@@ -58,8 +61,6 @@ export class ListadoVisitas {
   ngOnInit(): void {
     // Cargar datos del servicio
     this.cargarPacientes();
-    // Cargar datos de prueba (comentar cuando esté el backend)
-    //this.cargarDatosPrueba();
   }
 
   // Cargar pacientes desde el backend
@@ -118,8 +119,6 @@ export class ListadoVisitas {
     this.pacienteEnEdicion = paciente.id;
     this.observacionOriginal = paciente.observacion;
     this.observacionEditada = paciente.observacion;
-
-    console.log('Iniciando edición para paciente:', paciente.id);
   }
 
   // Cancelar edición
@@ -161,8 +160,6 @@ export class ListadoVisitas {
       observacion: this.observacionEditada
     }).subscribe({
       next: (response: any) => {
-        console.log('Observación guardada exitosamente:', response);
-
         // Actualizar con datos del servidor (opcional, pero buena práctica)
         if (pacienteIndex !== -1 && response.observacion) {
           this.pacientes[pacienteIndex].observacion = response.observacion;
@@ -175,8 +172,6 @@ export class ListadoVisitas {
 
         // Luego forzar refresco de la vista
         this.pacientes = [...this.pacientes];
-
-        // Usar Zone para asegurar que se ejecuta dentro de Angular
         setTimeout(() => {
           this.cdr.detectChanges();
           alert('Observación guardada correctamente');
@@ -244,12 +239,13 @@ export class ListadoVisitas {
     } else {
       // Si no, guardamos solo el ID y creamos el objeto para el formulario
       this.pacienteSeleccionadoId = paciente.id;
+      const fechaHoraActual = this.obtenerFechaActual();
       // Resetear formulario de visitante
       this.nuevoVisitante = {
         idPaciente: paciente.idpaciente,  // Usar idpaciente del paciente
         nombre: '',
         dni: '',
-        entrada: new Date(),
+        entrada: fechaHoraActual,
         observacion: ''
       };
     }
@@ -298,8 +294,6 @@ export class ListadoVisitas {
     // Enviar al backend
     this.http.post(`${environment.apiBaseUrl}/visitar/acompaniante/`, datosVisitante).subscribe({
       next: (response: any) => {
-        console.log('Visitante guardado exitosamente:', response);
-
         // Buscar el índice del paciente en el array local
         const pacienteIndex = this.pacientes.findIndex(p => p.id === this.pacienteSeleccionadoId);
 
@@ -313,9 +307,6 @@ export class ListadoVisitas {
             entrada: response.entrada ? new Date(response.entrada) : this.nuevoVisitante.entrada,
             observacion: response.observacion || this.nuevoVisitante.observacion || ''
           };
-
-          console.log('Visitante a agregar localmente:', nuevoVisitanteGuardado);
-
           // Asegurarse de que el array de acompañantes existe
           if (!this.pacientes[pacienteIndex].acompaniantes) {
             this.pacientes[pacienteIndex].acompaniantes = [];
@@ -327,10 +318,6 @@ export class ListadoVisitas {
           // Forzar la detección de cambios de Angular
           this.pacientes = [...this.pacientes];
         }
-
-        // Mostrar mensaje de éxito
-        alert('Visitante agregado correctamente');
-
 
 
         //Esta parte deberia borrarse? ya se que usaria el metodo detect changes
@@ -418,8 +405,24 @@ export class ListadoVisitas {
     }
   }
 
+  private obtenerFechaActual() : string{
+    const ahora = new Date();
+    const año = ahora.getFullYear();
+    const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+    const dia = String(ahora.getDate()).padStart(2, '0');
+    const horas = String(ahora.getHours()).padStart(2, '0');
+    const minutos = String(ahora.getMinutes()).padStart(2, '0');
+    return `${año}-${mes}-${dia}T${horas}:${minutos}`;  
+  }
 
 
 
+  // Método para cambiar el límite de la cantidad de visitas
+  cambiarLimite(delta: number): void {
+    const nuevoValor = this.limiteAcompaniantes + delta;
+    if (nuevoValor >= 1 && nuevoValor <= 10) { // límites razonables
+      this.limiteAcompaniantes = nuevoValor;
+    }
+  }
 
 }

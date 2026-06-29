@@ -1,0 +1,16 @@
+<div class="modulos-container">
+  <h2>Módulos</h2>
+
+  <div class="module-list">
+    <button
+      class="module-btn"
+      [class.disabled]="!hasAccessToVisitar()"
+      [disabled]="!hasAccessToVisitar()"
+      (click)="goToVisitar()"
+    >
+      Visitar
+    </button>
+  </div>
+
+  <p *ngIf="!hasAccessToVisitar()" class="hint">No tienes autorización para acceder al módulo Visitar.</p>
+</div>
