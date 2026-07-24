@@ -10,7 +10,17 @@
     >
       Visitar
     </button>
+
+    <button
+      class="module-btn"
+      [class.disabled]="!hasAccessToQuiro()"
+      [disabled]="!hasAccessToQuiro()"
+      (click)="goToQuiro()"
+    >
+      Quiro
+    </button>
   </div>
 
   <p *ngIf="!hasAccessToVisitar()" class="hint">No tienes autorización para acceder al módulo Visitar.</p>
+  <p *ngIf="!hasAccessToQuiro()" class="hint">No tienes autorización para acceder al módulo Quiro.</p>
 </div>

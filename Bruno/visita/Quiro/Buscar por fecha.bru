@@ -1,0 +1,21 @@
+meta {
+  name: Buscar por fecha
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:5002/api/quiro/cirugias?fechaDesde=2026-07-01&fechaHasta=2026-07-11
+  body: none
+  auth: inherit
+}
+
+params:query {
+  fechaDesde: 2026-07-01
+  fechaHasta: 2026-07-11
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

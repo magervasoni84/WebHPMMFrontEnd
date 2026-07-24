@@ -1,8 +1,14 @@
-# TODO - Fix error de parseo en pacientes
+# TODO - Ajuste módulo Entregas API JSON
 
-- [x] Analizar error y ubicar causa raíz (`/visitar` resolviendo en Angular HTML).
-- [x] Revisar `environment.ts`, `proxy.conf.json` y componente de visitas.
-- [x] Actualizar `src/environments/environment.ts` para usar `apiBaseUrl: '/api'`.
-- [x] Revisar/ajustar `src/environments/environment.prod.ts` para coherencia.
-- [x] Verificar que las llamadas queden como `/api/visitar...` y no `http://localhost:4200/visitar`.
-- [x] Explicar claramente diferencia entre ruta HTML (SPA) y endpoint GET API.
+- [x] Actualizar `src/app/pages/modulos/entregas/entregas.ts`
+  - [x] Cambiar payload a `{ puerta, protocolo, paciente }`
+  - [x] Cambiar endpoint a `/entregas`
+  - [x] Cambiar request de blob a JSON tipado
+  - [x] Agregar estado de respuesta para mostrar en UI
+- [x] Actualizar `src/app/pages/modulos/entregas/entregas.html`
+  - [x] Mostrar bloque de resultado (filtros, total, estado PDF)
+  - [x] Mantener mensaje de error
+- [x] Agregar timeout de 10s en búsqueda de entregas
+  - [x] Aplicar timeout al request HTTP
+  - [x] Mostrar mensaje específico cuando hay timeout
+  - [x] Rehabilitar botón para reintentar automáticamente al cortar por timeout

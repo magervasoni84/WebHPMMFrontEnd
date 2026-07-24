@@ -1,13 +1,17 @@
 meta {
-  name: Paciente
+  name: Buscar por HCL
   type: http
   seq: 1
 }
 
 get {
-  url: http://localhost:5002/api/visitar
+  url: http://localhost:5002/api/quiro/cirugias?hcl=12345
   body: none
   auth: inherit
+}
+
+params:query {
+  hcl: 12345
 }
 
 settings {

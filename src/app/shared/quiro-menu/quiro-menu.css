@@ -1,0 +1,43 @@
+.quiro-menu-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.quiro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.action-btn {
+  border: 1px solid #cfd8dc;
+  background: #ffffff;
+  color: #263238;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: #f5f8fa;
+  border-color: #90a4ae;
+}
+
+.action-btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+  .action-btn {
+    width: 100%;
+  }
+
+  .quiro-actions {
+    width: 100%;
+  }
+}

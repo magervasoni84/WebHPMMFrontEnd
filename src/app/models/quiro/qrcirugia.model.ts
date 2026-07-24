@@ -1,0 +1,35 @@
+export interface QrCirugiaModel {
+  ID: number;
+  HCL: string;
+  PAC: string;
+  FEC: string;
+  PQR1: string | null;
+  OS: string | null;
+  CIR: string | null;
+  TIP: string | null;
+  INS: string | null;
+  CRC: string | null;
+  PAT: string | null;
+  SAN: number | null;
+  ANE: string | null;
+  HIN: string | null;
+  HTE: string | null;
+  PROG: string | null;
+  URGE: string | null;
+  COS: string | null;
+  tipos: string | null;
+  PROTO: string | null;
+  manual: number | null;
+  fcg: string | null;
+  opec: string | null;
+  fcm: string | null;
+  opem: string | null;
+  pqr: string | null;
+  PQR2: string | null;
+  AYU: string | null;
+  monitor: string | null;
+  cirulista: string | null;
+  parteq: string | null;
+  AFI: string | null;
+  endoscopia: string | null;
+}

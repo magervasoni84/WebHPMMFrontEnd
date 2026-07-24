@@ -1,0 +1,25 @@
+meta {
+  name: Untitled
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:4200/api/entregas
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "puerta": "LBG",
+    "protocolo": 273009,
+    "paciente": 12345
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

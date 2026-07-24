@@ -1,0 +1,265 @@
+.module-container {
+  padding: 16px;
+}
+
+.filtros-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.filtro-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filtro-item label {
+  font-size: 0.85rem;
+  color: #455a64;
+  font-weight: 600;
+}
+
+.filtro-item input {
+  height: 36px;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 0.9rem;
+}
+
+.buscar-item button {
+  height: 36px;
+  border: 1px solid #1976d2;
+  background-color: #1976d2;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.buscar-item button:hover {
+  background-color: #1565c0;
+}
+
+.estado {
+  margin: 8px 0 12px;
+  color: #455a64;
+}
+
+.estado.error {
+  color: #c62828;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th,
+td {
+  border: 1px solid #e0e0e0;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f5f8fa;
+  font-weight: 700;
+}
+
+.detalle-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.detalle-modal {
+  width: min(900px, 95vw);
+  max-height: 85vh;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.detalle-modal.win-style {
+  width: min(820px, 96vw);
+  border: 1px solid #8a8a8a;
+  border-radius: 10px;
+  background: #f0f0f0;
+}
+
+.detalle-titlebar {
+  background: #2b5797;
+  color: #fff;
+  padding: 8px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  border-bottom: 1px solid #1a3b5c;
+}
+
+.title-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: none;
+}
+
+.dot.minimize {
+  background: #f5a623;
+}
+
+.dot.maximize {
+  background: #2d9cdb;
+}
+
+.dot.close {
+  background: #e81123;
+  cursor: pointer;
+}
+
+.detalle-modal-body {
+  padding: 20px 28px 16px;
+  background: #f9f9f9;
+  overflow: auto;
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+  align-items: baseline;
+}
+
+.field-item {
+  display: flex;
+  align-items: baseline;
+  margin-right: 32px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.field-item-full {
+  flex: 1 1 100%;
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.label {
+  font-weight: 700;
+  margin-right: 4px;
+  color: #1a1a1a;
+}
+
+.value {
+  font-weight: 400;
+  color: #1a1a1a;
+}
+
+.otros-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 16px;
+  margin-bottom: 6px;
+}
+
+.otros-item {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid #c0c0c0;
+  margin: 14px 0 12px;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.btn {
+  padding: 6px 20px;
+  font-size: 14px;
+  background: linear-gradient(to bottom, #f9f9f9, #e6e6e6);
+  border: 1px solid #a0a0a0;
+  border-radius: 4px;
+  color: #1a1a1a;
+}
+
+.btn-primary {
+  background: linear-gradient(to bottom, #4a8bc2, #2b5797);
+  border-color: #1a3b5c;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .filtros-row {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .filtros-row {
+    grid-template-columns: 1fr;
+  }
+
+  .buscar-item button {
+    width: 100%;
+  }
+
+  .detalle-modal-body {
+    padding: 16px;
+  }
+
+  .field-item {
+    margin-right: 16px;
+    white-space: normal;
+  }
+
+  .footer {
+    gap: 6px;
+  }
+
+  .btn {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  .otros-grid {
+    grid-template-columns: 1fr;
+  }
+}

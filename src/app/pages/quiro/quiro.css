@@ -1,0 +1,50 @@
+.quiro-container {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.quiro-header {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: center;
+}
+
+.quiro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.action-btn {
+  border: 1px solid #cfd8dc;
+  background: #ffffff;
+  color: #263238;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: #f5f8fa;
+  border-color: #90a4ae;
+}
+
+.action-btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+  .quiro-actions {
+    width: 100%;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+}

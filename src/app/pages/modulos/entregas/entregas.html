@@ -1,0 +1,66 @@
+<div class="entregas-page">
+  <div class="card">
+    <h1>Entregas</h1>
+
+    <form (ngSubmit)="buscar()" autocomplete="off">
+      <label for="puerta">Puerta</label>
+      <div class="row">
+        <select id="puerta" name="puerta" [(ngModel)]="puerta">
+          <option value="LBA">LBA</option>
+          <option value="LBG">LBG</option>
+        </select>
+
+        <input
+          id="protocolo"
+          name="protocolo"
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          [ngModel]="protocolo"
+          (ngModelChange)="protocoloInput($event)"
+          placeholder="Número"
+          maxlength="20"
+          required
+        />
+      </div>
+
+      <label for="paciente">Dato Paciente</label>
+      <input
+        id="paciente"
+        name="paciente"
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        [ngModel]="paciente"
+        (ngModelChange)="pacienteInput($event)"
+        placeholder="Solo números"
+        maxlength="20"
+        required
+      />
+
+      <button type="submit" [disabled]="cargando">
+        {{ cargando ? 'Buscando...' : 'Buscar' }}
+      </button>
+    </form>
+
+    <p class="error" *ngIf="mensajeError">{{ mensajeError }}</p>
+
+    <div *ngIf="resultado && !mensajeError" class="resultado">
+      <p><strong>Estado:</strong> {{ mensajeResultado }}</p>
+      <p><strong>Total:</strong> {{ resultado.total }}</p>
+
+      <p>
+        <strong>Filtros aplicados:</strong>
+        puerta={{ resultado.filtros.puerta }},
+        protocolo={{ resultado.filtros.protocolo }},
+        paciente={{ resultado.filtros.paciente }}
+      </p>
+
+      <p>
+        <strong>PDF:</strong>
+        {{ resultado.pdf.generado ? 'Generado' : 'No generado' }}
+        - {{ resultado.pdf.mensaje }}
+      </p>
+    </div>
+  </div>
+</div>

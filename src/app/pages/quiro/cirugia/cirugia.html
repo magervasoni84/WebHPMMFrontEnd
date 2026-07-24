@@ -1,0 +1,191 @@
+<app-quiro-menu></app-quiro-menu>
+
+<div class="module-container">
+  <div class="filtros-row">
+    <div class="filtro-item">
+      <label for="fechaDesde">Fecha inicio</label>
+      <input id="fechaDesde" type="date" [(ngModel)]="fechaDesde" />
+    </div>
+
+    <div class="filtro-item">
+      <label for="fechaHasta">Fecha final</label>
+      <input id="fechaHasta" type="date" [(ngModel)]="fechaHasta" />
+    </div>
+
+    <div class="filtro-item">
+      <label for="hcl">HCL</label>
+      <input id="hcl" type="text" [(ngModel)]="hcl" placeholder="Ingrese HCL" />
+    </div>
+
+    <div class="filtro-item buscar-item">
+      <button type="button" (click)="buscar()">Buscar</button>
+    </div>
+  </div>
+
+  <p class="estado" *ngIf="loading">Buscando...</p>
+  <p class="estado error" *ngIf="error">{{ error }}</p>
+
+  <div class="table-wrapper" *ngIf="resultados.length > 0 && !loading">
+    <table>
+      <thead>
+        <tr>
+          <th>HCL</th>
+          <th>Paciente</th>
+          <th>Fecha</th>
+          <th>PQR1</th>
+          <th>OS</th>
+          <th>Cirugano</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of resultados">
+          <td>{{ item.HCL || '-' }}</td>
+          <td>{{ (item.PAC || '').trim() || '-' }}</td>
+          <td>{{ formatFecha(item.FEC) || '-' }}</td>
+          <td>{{ item.PQR1 || '-' }}</td>
+          <td>{{ (item.OS || '').trim() || '-' }}</td>
+          <td>{{ (item.CIR || '').trim() || '-' }}</td>
+          <td>
+            <button type="button" (click)="abrirDetalle(item)">Ver</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="estado" *ngIf="!loading && !error && resultados.length === 0">
+    Sin resultados para los filtros seleccionados.
+  </p>
+</div>
+
+<div class="detalle-modal-backdrop" *ngIf="showDetalleModal" (click)="cerrarDetalle()">
+  <div class="detalle-modal win-style" (click)="$event.stopPropagation()">
+    <div class="detalle-titlebar">
+      <span>Modificación de Cirugías</span>
+      <div class="title-buttons">
+        <span class="dot minimize"></span>
+        <span class="dot maximize"></span>
+        <button type="button" class="dot close" (click)="cerrarDetalle()" aria-label="Cerrar"></button>
+      </div>
+    </div>
+
+    <div class="detalle-modal-body" *ngIf="selectedCirugia as detalle">
+      <div class="field-row">
+        <div class="field-item">
+          <span class="label">Fecha:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['FEC']) }}</span>
+        </div>
+        <div class="field-item">
+          <span class="label">Hora inicio:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['HIN']) }}</span>
+        </div>
+        <div class="field-item">
+          <span class="label">Hora finaliz:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['HTE']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-item-full">
+          <span class="label">Nombre del paciente:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['PAC']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-item-full">
+          <span class="label">Tipo de cirugía:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['PQR1']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-item-full">
+          <span class="label">Práctica realizada:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['PRA']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-item">
+          <span class="label">Cirujano:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['CIR']) }}</span>
+        </div>
+        <div class="field-item">
+          <span class="label">Ayudante:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['AYU']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-item">
+          <span class="label">Instrumentador/a:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['INS']) }}</span>
+        </div>
+        <div class="field-item">
+          <span class="label">Circulante:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['CIRCU']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-item-full">
+          <span class="label">Anestesista:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['ANE']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-item">
+          <span class="label">Obra Social:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['OS']) }}</span>
+        </div>
+        <div class="field-item">
+          <span class="label">Edad:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['EDAD']) }}</span>
+        </div>
+        <div class="field-item">
+          <span class="label">Nro. Historia Clínica:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['HCL']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-item">
+          <span class="label">Tipo de Anestesia:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['TAN']) }}</span>
+        </div>
+        <div class="field-item">
+          <span class="label">Unid. Sangre:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['UNS']) }}</span>
+        </div>
+        <div class="field-item">
+          <span class="label">Anatomía Patológica:</span>
+          <span class="value">{{ getDetalleItem(detalle, ['APA']) }}</span>
+        </div>
+      </div>
+
+      <div class="field-row" *ngIf="getOtrosCampos(detalle).length > 0">
+        <div class="field-item-full">
+          <span class="label">Otros datos:</span>
+        </div>
+      </div>
+      <div class="otros-grid" *ngIf="getOtrosCampos(detalle) as otros">
+        <div class="otros-item" *ngFor="let campo of otros">
+          <span class="label">{{ campo.key }}:</span>
+          <span class="value">{{ formatDetalleValor(campo.key, campo.value) }}</span>
+        </div>
+      </div>
+
+      <hr class="separator" />
+
+      <div class="footer">
+        <button class="btn btn-primary" type="button">Ver Parte Quirúrgico</button>
+        <button class="btn" type="button">Modificar</button>
+        <button class="btn" type="button">Eliminar</button>
+        <button class="btn" type="button" (click)="cerrarDetalle()">Salir</button>
+      </div>
+    </div>
+  </div>
+</div>
