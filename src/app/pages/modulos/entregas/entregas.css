@@ -21,6 +21,14 @@
   padding: 18px;
 }
 
+.logo {
+  display: block;
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  margin: 0 auto 12px;
+}
+
 h1 {
   margin: 0 0 16px;
   font-size: 1.3rem;
@@ -56,6 +64,22 @@ button {
   padding: 0 12px;
   font-size: 1rem;
   box-sizing: border-box;
+}
+
+.paciente-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.paciente-prefix {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #3a4761;
+  font-weight: 500;
 }
 
 select:focus,
