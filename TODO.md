@@ -1,4 +1,4 @@
-- [x] Agregar logo LogoHPMM.bmp en la parte superior de entregas.html
-- [x] Agregar texto "A - " antes del box de Dato Paciente en entregas.html
-- [x] Ajustar estilos en entregas.css para logo y alineación de "A - " con el input
-- [x] Marcar tareas completadas
+- [x] Editar `src/app/pages/modulos/entregas/entregas.html` para agregar label "Ingrese Protocolo" sobre select+input.
+- [x] Editar `src/app/pages/modulos/entregas/entregas.css` para ajustar anchos y mantener ambos controles lado a lado.
+- [x] Revisar responsive para no romper layout en móviles.
+- [x] Marcar tareas completadas.

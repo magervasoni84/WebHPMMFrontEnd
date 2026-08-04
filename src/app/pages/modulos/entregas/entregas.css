@@ -46,12 +46,20 @@ label {
   font-size: 0.9rem;
   font-weight: 600;
   color: #3a4761;
+  text-align: center;
 }
 
 .row {
   display: grid;
-  grid-template-columns: 110px 1fr;
+  grid-template-columns: 8ch minmax(0, 1fr);
   gap: 8px;
+  align-items: center;
+}
+
+#puerta {
+  width: 8ch;
+  min-width: 8ch;
+  padding: 0 4px;
 }
 
 select,
@@ -64,6 +72,11 @@ button {
   padding: 0 12px;
   font-size: 1rem;
   box-sizing: border-box;
+}
+
+#protocolo {
+  width: 100%;
+  min-width: 0;
 }
 
 .paciente-row {
@@ -110,6 +123,6 @@ button:disabled {
 
 @media (max-width: 360px) {
   .row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 8ch minmax(0, 1fr);
   }
 }
