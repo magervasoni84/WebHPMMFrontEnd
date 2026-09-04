@@ -227,7 +227,7 @@ export class Entregas {
         }
 
         if (response?.estado === 'NO VERIFICADO') {
-          alert('Nos encontramos trabajando.');
+          alert('El protocolo en cuestión aún no ha finalizado su fase de análisis/verificación.');
           this.limpiarFormulario();
           return;
         }

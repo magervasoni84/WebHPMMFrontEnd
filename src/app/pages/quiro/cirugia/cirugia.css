@@ -30,19 +30,50 @@
   font-size: 0.9rem;
 }
 
-.buscar-item button {
+.acciones-item {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  gap: 8px;
+}
+
+.acciones-item button {
   height: 36px;
+  border-radius: 6px;
+  padding: 0 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary {
   border: 1px solid #1976d2;
   background-color: #1976d2;
   color: #fff;
-  border-radius: 6px;
-  padding: 0 16px;
-  font-size: 0.9rem;
-  cursor: pointer;
 }
 
-.buscar-item button:hover {
+.btn-primary:hover {
   background-color: #1565c0;
+}
+
+.btn-secondary {
+  border: 1px solid #90a4ae;
+  background-color: #f5f7f8;
+  color: #37474f;
+}
+
+.btn-secondary:hover {
+  background-color: #e8edf0;
+}
+
+.btn-download {
+  border: 1px solid #2e7d32;
+  background-color: #2e7d32;
+  color: #fff;
+}
+
+.btn-download:hover {
+  background-color: #256428;
 }
 
 .estado {
@@ -133,13 +164,6 @@ th {
   border: none;
 }
 
-.dot.minimize {
-  background: #f5a623;
-}
-
-.dot.maximize {
-  background: #2d9cdb;
-}
 
 .dot.close {
   background: #e81123;
@@ -175,7 +199,7 @@ th {
 }
 
 .label {
-  font-weight: 700;
+  font-weight: 600;
   margin-right: 4px;
   color: #1a1a1a;
 }

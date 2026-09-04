@@ -21,10 +21,60 @@ export class Cirugia {
   loading = false;
   error = '';
   resultados: (QrCirugiaModel & { __raw?: any })[] = [];
+  apiResultados: any[] = [];
   selectedCirugia: any | null = null;
   showDetalleModal = false;
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+
+  resetFiltros(): void {
+    this.hcl = '';
+    this.fechaDesde = '';
+    this.fechaHasta = '';
+    this.error = '';
+    this.resultados = [];
+    this.selectedCirugia = null;
+    this.showDetalleModal = false;
+  }
+
+  descargarCsv(): void {
+    const source = this.apiResultados.length > 0 ? this.apiResultados : this.resultados;
+
+    if (!source.length) {
+      this.error = 'No hay resultados para descargar en CSV.';
+      return;
+    }
+
+    const allKeys = Array.from(
+      new Set(
+        source.flatMap((item) =>
+          Object.keys(item ?? {}).filter((key) => key !== '__raw' && key !== 'undefined')
+        )
+      )
+    );
+
+    const csvRows: string[] = [allKeys.join(',')];
+
+    for (const item of source) {
+      const row = allKeys.map((key) => {
+        const value = item?.[key];
+        const normalized = value === null || value === undefined ? '' : String(value).replace(/"/g, '""');
+        return `"${normalized}"`;
+      });
+      csvRows.push(row.join(','));
+    }
+
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `cirugias-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
 
   buscar(): void {
     this.loading = true;
@@ -77,6 +127,8 @@ export class Cirugia {
               : Array.isArray(data?.result)
                 ? data.result
                 : [];
+
+        this.apiResultados = [...rawList];
 
         const normalized: (QrCirugiaModel & { __raw?: any })[] = rawList.map((item: any) => ({
           HCL: item?.HCL ?? item?.hcl ?? '',
