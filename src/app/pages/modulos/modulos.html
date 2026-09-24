@@ -1,26 +1,49 @@
 <div class="modulos-container">
-  <h2>Módulos</h2>
+  <!-- Columna izquierda: Botones -->
+  <div class="left-column">
+    <h2>Módulos</h2>
 
-  <div class="module-list">
-    <button
-      class="module-btn"
-      [class.disabled]="!hasAccessToVisitar()"
-      [disabled]="!hasAccessToVisitar()"
-      (click)="goToVisitar()"
-    >
-      Visitar
-    </button>
+    <div class="module-list">
+      <button
+        class="module-btn"
+        [class.disabled]="!hasAccessToVisitar()"
+        [disabled]="!hasAccessToVisitar()"
+        (click)="goToVisitar()"
+      >
+        Visitar
+      </button>
 
-    <button
-      class="module-btn"
-      [class.disabled]="!hasAccessToQuiro()"
-      [disabled]="!hasAccessToQuiro()"
-      (click)="goToQuiro()"
-    >
-      Quiro
-    </button>
+      <button
+        class="module-btn"
+        [class.disabled]="!hasAccessToQuiro()"
+        [disabled]="!hasAccessToQuiro()"
+        (click)="goToQuiro()"
+      >
+        Quiro
+      </button>
+
+      <button
+        class="module-btn"
+        [class.disabled]="!hasAccessToCargarEstudios()"
+        [disabled]="!hasAccessToCargarEstudios()"
+        (click)="goToCargarEstudios()"
+      >
+        Carga de Estudios
+      </button>
+    </div>
+
+    <p *ngIf="!hasAccessToVisitar()" class="hint">No tienes autorización para acceder al módulo Visitar.</p>
+    <p *ngIf="!hasAccessToQuiro()" class="hint">No tienes autorización para acceder al módulo Quiro.</p>
   </div>
 
-  <p *ngIf="!hasAccessToVisitar()" class="hint">No tienes autorización para acceder al módulo Visitar.</p>
-  <p *ngIf="!hasAccessToQuiro()" class="hint">No tienes autorización para acceder al módulo Quiro.</p>
+  <!-- Columna derecha: Listado de texto de 5 renglones -->
+  <div class="right-column">
+    <ul class="info-list">
+      <li>PERMISOS</li>
+      <li>QR: Quirofano</li>
+      <li>SG: Visitar</li>
+      <li>CE: Cargar Estudios</li>
+      <li>Información adicional 5</li>
+    </ul>
+  </div>
 </div>

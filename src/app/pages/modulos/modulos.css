@@ -1,5 +1,40 @@
-.modulos-container { padding: 20px; }
+
 .module-list { display: flex; gap: 12px; margin-top: 16px; }
 .module-btn { padding: 12px 20px; border-radius: 6px; border: none; background: #667eea; color: white; cursor: pointer; font-weight: 600; }
 .module-btn.disabled { opacity: 0.4; cursor: not-allowed; }
 .hint { color: #666; margin-top: 12px; }
+
+
+
+.modulos-container {
+  padding: 20px;
+  display: flex;
+  gap: 40px; /* Espacio entre columnas */
+  align-items: flex-start;
+}
+
+.left-column {
+  flex: 0 0 auto; /* La columna izquierda toma el tamaño de su contenido */
+  min-width: 200px; /* Ancho mínimo para los botones */
+}
+
+.right-column {
+  flex: 1; /* La columna derecha ocupa el espacio restante */
+}
+
+.info-list {
+  list-style: none; /* Quita los puntos de la lista si no los quieres */
+  padding: 0;
+  margin: 0;
+}
+
+.info-list li {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #333;
+}
+
+.info-list li:last-child {
+  border-bottom: none;
+}

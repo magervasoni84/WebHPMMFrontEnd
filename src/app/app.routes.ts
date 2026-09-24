@@ -15,7 +15,10 @@ import { ParteQuirurgico } from './pages/quiro/parte-quirurgico/parte-quirurgico
 import { Endoscopia } from './pages/quiro/endoscopia/endoscopia';
 import { QrTurno } from './pages/quiro/qr-turno/qr-turno';
 import { QrVerHcl } from './pages/quiro/qr-ver-hcl/qr-ver-hcl';
-import { Entregas } from './pages/modulos/entregas/entregas';
+import { Entregas } from './pages/entregas/entregas';
+import { Cargarestudios } from './pages/cargarestudios/cargarestudios';
+
+
 
 export const routes: Routes = [
   { path: 'entregas', component: Entregas },
@@ -30,6 +33,10 @@ export const routes: Routes = [
   { path: 'quiro/endoscopia', component: Endoscopia, canActivate: [AuthGuard], data: { requiredPermission: 'QR' } },
   { path: 'quiro/turnos', component: QrTurno, canActivate: [AuthGuard], data: { requiredPermission: 'QR' } },
   { path: 'quiro/ver-hcl', component: QrVerHcl, canActivate: [AuthGuard], data: { requiredPermission: 'QR' } },
+  
+  { path: 'cargarestudios', component: Cargarestudios, canActivate: [AuthGuard], data: { requiredPermission: 'CE' } },
+   
+  
   { path: '', redirectTo: 'modulos', pathMatch: 'full' },
   {
     path: 'visitas',

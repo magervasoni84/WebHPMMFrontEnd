@@ -1,0 +1,111 @@
+<main class="carga-estudios">
+	<header class="pagina-header">
+		<div>
+			<p class="eyebrow">Estudios médicos</p>
+			<h1>Cargar estudios</h1>
+			<p class="descripcion">Seleccione los archivos PDF y complete los datos de cada estudio antes de enviarlos.</p>
+		</div>
+	</header>
+
+	<nav class="pasos" aria-label="Pasos para cargar estudios">
+		<div class="paso" [class.activo]="paso === 1" [class.completado]="paso === 2">
+			<span class="numero">1</span>
+			<span>Seleccionar PDFs</span>
+		</div>
+		<div class="separador"></div>
+		<div class="paso" [class.activo]="paso === 2">
+			<span class="numero">2</span>
+			<span>Completar datos</span>
+		</div>
+	</nav>
+
+	<section *ngIf="paso === 1" class="panel" aria-labelledby="seleccion-titulo">
+		<div class="panel-header">
+			<div>
+				<h2 id="seleccion-titulo">Archivos de estudio</h2>
+				<p>Puede seleccionar uno o varios PDFs a la vez.</p>
+			</div>
+			<span class="contador">{{ archivosSeleccionados.length }} seleccionados</span>
+		</div>
+
+		<label class="zona-carga" for="archivos-pdf">
+			<span class="icono-pdf" aria-hidden="true">PDF</span>
+			<span class="zona-titulo">Agregar archivos PDF</span>
+			<span class="zona-ayuda">Haga clic aquí para buscarlos en su equipo</span>
+			<input id="archivos-pdf" type="file" accept="application/pdf,.pdf" multiple
+				(change)="seleccionarArchivos($event)">
+		</label>
+
+		<p *ngIf="mensajeError" class="mensaje error" role="alert">{{ mensajeError }}</p>
+
+		<ul *ngIf="archivosSeleccionados.length" class="lista-archivos" aria-label="Archivos seleccionados">
+			<li *ngFor="let archivo of archivosSeleccionados; let indice = index">
+				<span class="mini-pdf" aria-hidden="true">PDF</span>
+				<span class="nombre-archivo">{{ archivo.name }}</span>
+				<span class="tamano">{{ archivo.size / 1024 / 1024 | number:'1.2-2' }} MB</span>
+				<button type="button" class="boton-icono" (click)="quitarArchivo(indice)" [attr.aria-label]="'Quitar ' + archivo.name"
+					title="Quitar archivo">&times;</button>
+			</li>
+		</ul>
+
+		<div class="acciones">
+			<button type="button" class="boton principal" [disabled]="!archivosSeleccionados.length" (click)="avanzarAlPasoDos()">
+				Continuar con los datos <span aria-hidden="true">&#8594;</span>
+			</button>
+		</div>
+	</section>
+
+	<section *ngIf="paso === 2" class="panel" aria-labelledby="datos-titulo">
+		<div class="panel-header">
+			<div>
+				<h2 id="datos-titulo">Datos de los estudios</h2>
+				<p>Complete la puerta, el protocolo y el paciente para cada archivo.</p>
+			</div>
+			<span class="contador">{{ estudiosPendientes.length }} estudios</span>
+		</div>
+
+		<div class="tabla-contenedor">
+			<table>
+				<thead>
+					<tr>
+						<th>Archivo</th>
+						<th>Puerta</th>
+						<th>Protocolo</th>
+						<th>Paciente</th>
+						<th><span class="solo-lector">Acción</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let estudio of estudiosPendientes; let indice = index">
+						<td class="archivo-celda">
+							<span class="mini-pdf" aria-hidden="true">PDF</span>
+							<span [attr.title]="estudio.archivo.name">{{ estudio.archivo.name }}</span>
+						</td>
+						<td class="campo-corto"><input type="text" maxlength="3" [(ngModel)]="estudio.puerta" (input)="normalizarPuerta(estudio)" placeholder="Puerta" [attr.aria-label]="'Puerta para ' + estudio.archivo.name"></td>
+						<td class="campo-numerico"><input type="text" inputmode="numeric" pattern="[0-9]*" required maxlength="10" [(ngModel)]="estudio.protocolo" (input)="normalizarNumero(estudio, 'protocolo')" placeholder="Protocolo" [attr.aria-label]="'Protocolo para ' + estudio.archivo.name"></td>
+						<td class="campo-numerico"><input type="text" inputmode="numeric" pattern="[0-9]*" required maxlength="10" [(ngModel)]="estudio.paciente" (input)="normalizarNumero(estudio, 'paciente')" placeholder="Paciente" [attr.aria-label]="'Paciente para ' + estudio.archivo.name"></td>
+						<td><button type="button" class="boton-icono" (click)="quitarEstudio(indice)" [attr.aria-label]="'Quitar ' + estudio.archivo.name" title="Quitar estudio">&times;</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<p *ngIf="mensajeError" class="mensaje aviso" role="status">{{ mensajeError }}</p>
+
+		<ul *ngIf="respuestaCarga as respuesta" class="lista-archivos resultados" aria-label="Resultado de la carga">
+			<li *ngFor="let resultado of respuesta.estudios">
+				<span class="nombre-archivo">{{ resultado.archivo }}</span>
+				<span [class.resultado-ok]="resultado.estado === 'OK'" [class.resultado-error]="resultado.estado !== 'OK'">
+					{{ resultado.estado }}: {{ resultado.mensaje }}
+				</span>
+			</li>
+		</ul>
+
+		<div class="acciones acciones-doble">
+			<button type="button" class="boton secundario" (click)="volverAlPasoUno()">&#8592; Volver</button>
+			<button type="button" class="boton principal" [disabled]="cargando" (click)="prepararCarga()">
+				{{ cargando ? 'Enviando...' : 'Enviar estudios' }}
+			</button>
+		</div>
+	</section>
+</main>

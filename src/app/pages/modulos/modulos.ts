@@ -27,10 +27,13 @@ export class Modulos implements OnInit, OnDestroy {
     if (this.sub) this.sub.unsubscribe();
   }
 
+
+//La seguridad de los modulos se da en el apartado observacion separado por ;
+
   hasAccessToVisitar(): boolean {
     if (!this.currentUser) return false;
     const obs = this.currentUser.observacion || [];
-    // Normalize and check for 'SG' key in any part of observacion entries
+
     for (const entry of obs) {
       if (!entry) continue;
       const parts = entry.split(/[,;\s]+/).map(p => p.trim().toUpperCase()).filter(Boolean);
@@ -42,7 +45,7 @@ export class Modulos implements OnInit, OnDestroy {
   hasAccessToQuiro(): boolean {
     if (!this.currentUser) return false;
     const obs = this.currentUser.observacion || [];
-    // Normalize and check for 'QR' key in any part of observacion entries
+
     for (const entry of obs) {
       if (!entry) continue;
       const parts = entry.split(/[,;\s]+/).map(p => p.trim().toUpperCase()).filter(Boolean);
@@ -50,6 +53,18 @@ export class Modulos implements OnInit, OnDestroy {
     }
     return false;
   }
+
+  hasAccessToCargarEstudios(): boolean {
+    if (!this.currentUser) return false;
+    const obs = this.currentUser.observacion || [];
+    for (const entry of obs) {
+      if (!entry) continue;
+      const parts = entry.split(/[,;\s]+/).map(p => p.trim().toUpperCase()).filter(Boolean);
+      if (parts.includes('CE')) return true;
+    }
+    return false;
+  }
+
 
   goToVisitar() {
     if (this.hasAccessToVisitar()) {
@@ -62,4 +77,11 @@ export class Modulos implements OnInit, OnDestroy {
       this.router.navigate(['/quiro']);
     }
   }
+
+  goToCargarEstudios() {
+    if (this.hasAccessToCargarEstudios()) {
+      this.router.navigate(['/cargarestudios']);
+    }
+  }
+
 }

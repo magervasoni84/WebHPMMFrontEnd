@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { race, throwError, timer } from 'rxjs';
+import { Observable, race, throwError, timer } from 'rxjs';
 import { finalize, mapTo, mergeMap, tap } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 interface EntregasResponse {
   estado?: string;
@@ -40,7 +40,7 @@ interface EntregasResponse {
 export class Entregas {
   private readonly http = inject(HttpClient);
 
-  puerta: 'LBA' | 'LBG' = 'LBA';
+  puerta: 'LBA' | 'LBG' | 'APA' | 'API' = 'LBA';
   protocolo = '';
   paciente = '';
   cargando = false;
@@ -179,6 +179,30 @@ export class Entregas {
     this.mensajeResultado = '';
   }
 
+  private esPuertaArchivo(puerta: string): boolean {
+    return ['APA', 'API'].includes(puerta.toUpperCase());
+  }
+
+  private descargarRespuestaDirecta(response: HttpResponse<Blob>, payload: {
+    puerta: string;
+    protocolo: number;
+    paciente: number;
+  }): void {
+    const blob = response.body;
+
+    if (!blob) {
+      this.mensajeError = 'No se recibió el archivo PDF.';
+      return;
+    }
+
+    const url = URL.createObjectURL(blob);
+    const enlace = document.createElement('a');
+    enlace.href = url;
+    enlace.download = `${payload.puerta}-${payload.protocolo}-${payload.paciente}.pdf`;
+    enlace.click();
+    URL.revokeObjectURL(url);
+  }
+
   buscar(): void {
     this.mensajeError = '';
     this.mensajeResultado = '';
@@ -201,7 +225,11 @@ export class Entregas {
 
     console.log('[Entregas] Iniciando búsqueda', { endpoint, payload, timeoutMs: 10000 });
 
-    const http$ = this.http.post<EntregasResponse>(endpoint, payload).pipe(
+    const http$: Observable<EntregasResponse | HttpResponse<Blob>> = this.esPuertaArchivo(payload.puerta)
+      ? this.http.post(endpoint, payload, { responseType: 'blob', observe: 'response' })
+      : this.http.post<EntregasResponse>(endpoint, payload);
+
+    const solicitud$ = http$.pipe(
       tap((response) => console.log('[Entregas] HTTP respondió antes del timeout', response))
     );
 
@@ -211,7 +239,7 @@ export class Entregas {
       mergeMap(() => throwError(() => new Error('Timeout')))
     );
 
-    race(http$, timeout$).pipe(
+    race(solicitud$, timeout$).pipe(
       finalize(() => {
         this.cargando = false;
         console.log('[Entregas] finalize ejecutado. cargando=false');
@@ -219,6 +247,12 @@ export class Entregas {
     ).subscribe({
       next: (response) => {
         console.log('[Entregas] next ejecutado', response);
+
+        if (response instanceof HttpResponse) {
+          this.descargarRespuestaDirecta(response, payload);
+          this.limpiarFormulario();
+          return;
+        }
 
         if (response?.estado === 'ERROR') {
           alert('Datos erroneos');
