@@ -1,0 +1,129 @@
+<main class="ver-hcl" [attr.inert]="historiaAbierta ? '' : null">
+  <section class="panel" aria-labelledby="ver-hcl-titulo">
+    <h2 id="ver-hcl-titulo">Lista de internados</h2>
+
+    <p *ngIf="cargando" class="estado" role="status">Cargando pacientes internados...</p>
+    <p *ngIf="mensajeError" class="estado estado-error" role="alert">{{ mensajeError }}</p>
+
+    <div *ngIf="!cargando && !mensajeError && internados.length === 0" class="estado">
+      No hay pacientes internados.
+    </div>
+
+    <div *ngIf="internados.length > 0" class="tabla-responsive">
+      <table class="tabla-internados">
+        <thead>
+          <tr>
+            <th>Hab.</th>
+            <th>Cama</th>
+            <th>Paciente</th>
+            <th>HCL</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Diagnóstico presuntivo</th>
+            <th>Ubicación</th>
+            <th>Días</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let internado of internados">
+            <td>{{ internado.HAB ?? '-' }}</td>
+            <td>{{ internado.CAM ?? '-' }}</td>
+            <td>{{ internado.Paciente ?? '-' }}</td>
+            <td>{{ internado.HCL || '-' }}</td>
+            <td>{{ internado.Nombre || '-' }}</td>
+            <td>{{ calcularEdad(internado.FecNac) }}</td>
+            <td>{{ internado.DiagPresuntivo || '-' }}</td>
+            <td>{{ internado.Ubicacion || '-' }}</td>
+            <td>{{ calcularDiasInternacion(internado.FecInternacion) }}</td>
+            <td>
+              <button
+                type="button"
+                class="boton-hcl"
+                [disabled]="!internado.HCL"
+                [title]="internado.HCL ? 'Ver historia clínica completa' : 'No hay número de HCL'"
+                (click)="abrirHistoria(internado)"
+              >
+                HCL
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div
+  *ngIf="historiaAbierta"
+  class="modal-historia"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="historia-titulo"
+  (keydown.escape)="$event.preventDefault(); $event.stopPropagation()"
+>
+  <section class="ventana-historia">
+    <header class="encabezado-historia">
+      <div>
+        <h2 id="historia-titulo">
+          {{ pacienteSeleccionado?.Nombre || 'Paciente' }}
+          <span *ngIf="pacienteSeleccionado?.HCL">· HCL {{ pacienteSeleccionado?.HCL }}</span>
+        </h2>
+      </div>
+      <button type="button" class="boton-volver" (click)="cerrarHistoria()">Volver</button>
+    </header>
+
+    <p *ngIf="cargandoHistoria" class="estado" role="status">Cargando historia clínica...</p>
+    <p *ngIf="errorHistoria" class="estado estado-error" role="alert">{{ errorHistoria }}</p>
+
+    <div
+      *ngIf="!cargandoHistoria && !errorHistoria"
+      class="contenido-historia"
+    >
+      <section class="panel-historia listado-historia" aria-label="Registros de la historia clínica">
+        <div *ngIf="!sinRegistrosHistoria" class="columnas-historia">
+          <div class="encabezados-registro" role="row">
+            <span role="columnheader">Fecha</span>
+            <span role="columnheader">Origen</span>
+            <span role="columnheader">Protocolo</span>
+            <span role="columnheader">Servicio</span>
+            <span role="columnheader">Profesional</span>
+          </div>
+          <ng-container *ngFor="let grupo of gruposHistoria">
+            <section *ngIf="grupo.registros.length > 0" class="grupo-historia">
+              <h3>{{ grupo.titulo }}</h3>
+              <button
+                *ngFor="let registro of grupo.registros"
+                type="button"
+                class="linea-historia"
+                [class.seleccionada]="registroSeleccionado === registro"
+                [attr.aria-pressed]="registroSeleccionado === registro"
+                (click)="seleccionarRegistro(registro)"
+              >
+                <span class="fecha-registro">{{ registro.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+                <span>{{ registro.origen || '-' }}</span>
+                <span>{{ formatoPuertaOrden(registro) }}</span>
+                <span>{{ registro.servicio || '-' }}</span>
+                <span>{{ registro.profesional || '-' }}</span>
+              </button>
+            </section>
+          </ng-container>
+        </div>
+
+        <p *ngIf="sinRegistrosHistoria" class="estado">
+          No hay registros para mostrar.
+        </p>
+      </section>
+
+      <section class="panel-historia detalle-historia" aria-labelledby="detalle-titulo">
+        <h3 id="detalle-titulo">Detalle</h3>
+        <p *ngIf="registroSeleccionado; else sinSeleccion" class="texto-detalle">
+          {{ registroSeleccionado.txt || 'Sin texto disponible.' }}
+        </p>
+        <ng-template #sinSeleccion>
+          <p class="estado">Seleccione un registro para ver su detalle.</p>
+        </ng-template>
+      </section>
+    </div>
+  </section>
+</div>

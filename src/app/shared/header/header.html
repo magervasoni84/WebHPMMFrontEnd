@@ -1,7 +1,10 @@
 <header class="bg-cover text-white">
     <div class="container header-content">
         <div class="header-left">
-            <h1 class="display-6 fw-bold">HPMM</h1>
+            <a class="brand-link" routerLink="/modulos" aria-label="Volver al selector de módulos">
+                <img src="assets/images/LogoHPMM.png" alt="Logo del Hospital Privado Mariano Moreno" />
+            </a>
+            <h1 class="display-6 fw-bold">Hospital Privado Mariano Moreno</h1>
         </div>
         <div *ngIf="isLoggedIn()" class="header-right">
             <div class="user-info">

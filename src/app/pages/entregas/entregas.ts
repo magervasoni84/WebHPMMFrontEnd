@@ -40,7 +40,7 @@ interface EntregasResponse {
 export class Entregas {
   private readonly http = inject(HttpClient);
 
-  puerta: 'LBA' | 'LBG' | 'APA' | 'API' = 'LBA';
+  puerta: 'LBA' | 'LBG' | 'APA' | 'PBR' = 'LBA';
   protocolo = '';
   paciente = '';
   cargando = false;
@@ -180,7 +180,7 @@ export class Entregas {
   }
 
   private esPuertaArchivo(puerta: string): boolean {
-    return ['APA', 'API'].includes(puerta.toUpperCase());
+    return ['APA', 'PBR'].includes(puerta.toUpperCase());
   }
 
   private descargarRespuestaDirecta(response: HttpResponse<Blob>, payload: {

@@ -15,12 +15,40 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.brand-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.brand-link img {
+    display: block;
+    width: 104px;
+    height: 104px;
+    object-fit: contain;
+}
+
+.brand-link:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
 }
 
 .header-left h1 {
     margin: 0;
-    font-size: 28px;
+    font-size: clamp(18px, 2.5vw, 28px);
     font-weight: bold;
+    line-height: 1.15;
 }
 
 .header-right {
@@ -59,4 +87,33 @@ header {
 
 .btn-logout:active {
     background-color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 640px) {
+    header {
+        padding: 14px 0;
+    }
+
+    .header-content {
+        align-items: flex-start;
+    }
+
+    .header-left {
+        align-items: flex-start;
+    }
+
+    .brand-link img {
+        width: 84px;
+        height: 84px;
+    }
+
+    .header-left h1 {
+        max-width: 220px;
+    }
+
+    .header-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+    }
 }

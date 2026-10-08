@@ -30,10 +30,20 @@
       >
         Carga de Estudios
       </button>
+
+      <button
+        class="module-btn"
+        [class.disabled]="!hasAccessToVerHcl()"
+        [disabled]="!hasAccessToVerHcl()"
+        (click)="goToVerHcl()"
+      >
+        Ver Historia Clinica
+      </button>
     </div>
 
     <p *ngIf="!hasAccessToVisitar()" class="hint">No tienes autorización para acceder al módulo Visitar.</p>
     <p *ngIf="!hasAccessToQuiro()" class="hint">No tienes autorización para acceder al módulo Quiro.</p>
+    <p *ngIf="!hasAccessToVerHcl()" class="hint">No tienes autorización para acceder al módulo Ver Historia Clínica.</p>
   </div>
 
   <!-- Columna derecha: Listado de texto de 5 renglones -->
@@ -43,6 +53,7 @@
       <li>QR: Quirofano</li>
       <li>SG: Visitar</li>
       <li>CE: Cargar Estudios</li>
+      <li>VHCL: Ver Historia Clínica</li>
       <li>Información adicional 5</li>
     </ul>
   </div>

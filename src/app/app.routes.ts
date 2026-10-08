@@ -17,6 +17,7 @@ import { QrTurno } from './pages/quiro/qr-turno/qr-turno';
 import { QrVerHcl } from './pages/quiro/qr-ver-hcl/qr-ver-hcl';
 import { Entregas } from './pages/entregas/entregas';
 import { Cargarestudios } from './pages/cargarestudios/cargarestudios';
+import { VerHcl } from './pages/verhcl/verhcl';
 
 
 
@@ -35,6 +36,7 @@ export const routes: Routes = [
   { path: 'quiro/ver-hcl', component: QrVerHcl, canActivate: [AuthGuard], data: { requiredPermission: 'QR' } },
   
   { path: 'cargarestudios', component: Cargarestudios, canActivate: [AuthGuard], data: { requiredPermission: 'CE' } },
+  { path: 'verhcl', component: VerHcl, canActivate: [AuthGuard], data: { requiredPermission: 'VHCL' } },
    
   
   { path: '', redirectTo: 'modulos', pathMatch: 'full' },

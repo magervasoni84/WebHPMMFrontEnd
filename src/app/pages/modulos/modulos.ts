@@ -65,6 +65,17 @@ export class Modulos implements OnInit, OnDestroy {
     return false;
   }
 
+  hasAccessToVerHcl(): boolean {
+    if (!this.currentUser) return false;
+    const obs = this.currentUser.observacion || [];
+    for (const entry of obs) {
+      if (!entry) continue;
+      const parts = entry.split(/[,;\s]+/).map(p => p.trim().toUpperCase()).filter(Boolean);
+      if (parts.includes('VHCL')) return true;
+    }
+    return false;
+  }
+
 
   goToVisitar() {
     if (this.hasAccessToVisitar()) {
@@ -81,6 +92,12 @@ export class Modulos implements OnInit, OnDestroy {
   goToCargarEstudios() {
     if (this.hasAccessToCargarEstudios()) {
       this.router.navigate(['/cargarestudios']);
+    }
+  }
+
+  goToVerHcl() {
+    if (this.hasAccessToVerHcl()) {
+      this.router.navigate(['/verhcl']);
     }
   }
 
